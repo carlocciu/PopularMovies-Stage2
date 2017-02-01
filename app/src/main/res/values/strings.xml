@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+    <string name="error">Error</string>
+    <string name="sorting">Sorting</string>
+    <string name="release">Release Date:</string>
+    <string name="rating">User Rating:</string>
+
+    <!-- Key name for storing sorting in SharedPreferences [CHAR LIMIT=NONE] -->
+    <string name="pref_sorting">sorting</string>
+
+    <!-- Default sorting preference [CHAR LIMIT=NONE] -->
+    <string name="pref_sorting_default">popular</string>
+
+    <string name="vote_average">\n%.1f/10</string>
+
+
+</resources>
+
