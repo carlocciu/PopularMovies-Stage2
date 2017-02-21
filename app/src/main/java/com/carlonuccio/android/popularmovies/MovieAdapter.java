@@ -19,16 +19,17 @@ import java.util.ArrayList;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private ArrayList<Movie> mMoviePosterPath = new ArrayList<>();
-
+    private Context mContext;
     private final MovieAdapterOnClickHandler mClickHandler;
+
+    private ArrayList<Movie> mMoviePosterPath = new ArrayList<>();
 
     public interface MovieAdapterOnClickHandler {
         void onClick(Movie singleMovie);
     }
 
-    public MovieAdapter(MovieAdapterOnClickHandler clickHandler) {
-
+    public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler) {
+        mContext = context;
         mClickHandler = clickHandler;
     }
 
@@ -39,17 +40,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final ImageView mMovieImageView;
-        public final Context mContext;
 
         public MovieAdapterViewHolder(View view) {
             super(view);
-            mContext = itemView.getContext();
             mMovieImageView = (ImageView) view.findViewById(R.id.tv_image_thumbnail);
             view.setOnClickListener(this);
         }
 
         void setImage(String movie){
-            Uri posterUri = MovieUtils.getPosterUri("w500", movie);
+            Uri posterUri = MovieUtils.getPosterUri("w342", movie);
             Picasso.with(mContext).load(posterUri).into(mMovieImageView);
         }
 
@@ -63,12 +62,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public MovieAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.movie_list_item;
-        LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
-
-        View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.movie_list_item, viewGroup, false);
         return new MovieAdapterViewHolder(view);
     }
 

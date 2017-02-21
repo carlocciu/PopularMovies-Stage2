@@ -25,7 +25,8 @@ public final class MovieUtils {
         final String USER_RATING = "vote_average";
         final String RELEASE_DATE = "release_date";
         final String OVERVIEW = "overview";
-        final String POPULARITY = "popularity";
+        final String ID = "id";
+
 
         ArrayList<Movie> movieData = new ArrayList<>();
 
@@ -34,13 +35,12 @@ public final class MovieUtils {
         JSONArray singlePage = moviePageJson.getJSONArray(RESULT);
 
         for (int i = 0; i < singlePage.length(); i++) {
-            movieData.add(i, new Movie(singlePage.getJSONObject(i).getString(TITLE),
+            movieData.add(i, new Movie(singlePage.getJSONObject(i).getInt(ID),
+                    singlePage.getJSONObject(i).getString(TITLE),
                     singlePage.getJSONObject(i).getString(POSTER_PATH),
                     singlePage.getJSONObject(i).getString(OVERVIEW),
                     singlePage.getJSONObject(i).getDouble(USER_RATING),
-                    singlePage.getJSONObject(i).getString(RELEASE_DATE),
-                    singlePage.getJSONObject(i).getDouble(POPULARITY)));
-
+                    singlePage.getJSONObject(i).getString(RELEASE_DATE)));
         }
 
         return movieData;

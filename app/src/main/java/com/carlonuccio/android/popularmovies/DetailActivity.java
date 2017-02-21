@@ -10,6 +10,9 @@ import android.widget.TextView;
 import com.carlonuccio.android.popularmovies.utilities.MovieUtils;
 import com.squareup.picasso.Picasso;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Created by carlonuccio on 30/01/17.
  */
@@ -22,35 +25,28 @@ public class DetailActivity extends AppCompatActivity {
     private double mUserRating;
     private String mReleaseDate;
 
-    private TextView mOverviewTV;
-    private TextView mTitleTV;
-    private TextView mRatingTV;
-    private TextView mReleaseTV;
-    private ImageView mPosterIV;
-
-    private Movie mMovie;
+    @BindView(R.id.tv_overview_display) TextView mOverviewTV;
+    @BindView(R.id.tv_title_display) TextView mTitleTV;
+    @BindView(R.id.tv_rating_display) TextView mRatingTV;
+    @BindView(R.id.tv_release_display) TextView mReleaseTV;
+    @BindView(R.id.iv_poster_display) ImageView mPosterIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        ButterKnife.bind(this);
 
         Intent intentThatStartedThisActivity = getIntent();
 
         if (intentThatStartedThisActivity != null) {
-            mMovie = (Movie) intentThatStartedThisActivity.getSerializableExtra("Movie");
+            Movie mMovie = getIntent().getParcelableExtra("Movie");
 
             mTitle = mMovie.getmTitle();
             mPosterThumbnail = mMovie.getmPosterThumbnail();
             mOverview = mMovie.getmOverview();
             mUserRating = mMovie.getmUserRating();
             mReleaseDate = mMovie.getmReleaseDate();
-
-            mOverviewTV = (TextView) findViewById(R.id.tv_overview_display);
-            mTitleTV = (TextView) findViewById(R.id.tv_title_display);
-            mRatingTV = (TextView) findViewById(R.id.tv_rating_display);
-            mReleaseTV = (TextView) findViewById(R.id.tv_release_display);
-            mPosterIV = (ImageView) findViewById(R.id.iv_poster_display);
 
             Uri posterUri = MovieUtils.getPosterUri("w500", mPosterThumbnail);
             Picasso.with(this).load(posterUri).into(mPosterIV);
@@ -63,7 +59,6 @@ public class DetailActivity extends AppCompatActivity {
             mReleaseTV.setText(mReleaseDate);
 
         }
-
 
     }
 }

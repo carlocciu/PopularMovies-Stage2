@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -35,7 +36,7 @@ public final class NetworkUtils {
         Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
                 .appendPath(sorting)
                 .appendQueryParameter(API_KEY, BuildConfig.THE_MOVIE_API_KEY)
-                .appendQueryParameter(API_LANGUAGE, "en")
+                .appendQueryParameter(API_LANGUAGE, Locale.getDefault().getLanguage())
                 .appendQueryParameter(API_PARAM_PAGE, String.valueOf(page))
                 .build();
 
