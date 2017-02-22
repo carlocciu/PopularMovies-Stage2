@@ -22,6 +22,11 @@
             android:parentActivityName=".MainActivity">>
 
         </activity>
+        <activity
+            android:name=".DetailReviewActivity"
+            android:parentActivityName=".DetailActivity">>
+
+        </activity>
     </application>
 
 </manifest>

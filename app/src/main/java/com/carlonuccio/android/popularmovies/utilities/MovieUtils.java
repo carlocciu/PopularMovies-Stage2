@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.carlonuccio.android.popularmovies.Movie;
+import com.carlonuccio.android.popularmovies.Review;
 import com.carlonuccio.android.popularmovies.Trailer;
 
 import org.json.JSONArray;
@@ -70,6 +71,27 @@ public final class MovieUtils {
         }
 
         return trailerData;
+    }
+
+    public static ArrayList<Review> getSimpleReviewsFromJson(Context context, String reviewsJsonStr) throws JSONException {
+
+        final String RESULT = "results";
+        final String AUTHOR = "author";
+        final String CONTENT = "content";
+
+        ArrayList<Review> reviewData = new ArrayList<>();
+
+        JSONObject reviewJSON = new JSONObject(reviewsJsonStr);
+
+        JSONArray singlePage = reviewJSON.getJSONArray(RESULT);
+
+        for (int i = 0; i < singlePage.length(); i++) {
+                reviewData.add(i, new Review(
+                        singlePage.getJSONObject(i).getString(AUTHOR),
+                        singlePage.getJSONObject(i).getString(CONTENT)));
+        }
+
+        return reviewData;
     }
 
     public static Uri getPosterUri(String size, String posterPath) {

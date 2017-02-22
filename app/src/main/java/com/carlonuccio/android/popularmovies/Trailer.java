@@ -3,6 +3,8 @@ package com.carlonuccio.android.popularmovies;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 /**
  * Created by carlonuccio on 21/02/17.
  */
@@ -64,4 +66,12 @@ public class Trailer implements Parcelable {
             return new Trailer[size];
         }
     };
+
+    public static String[] getTitles(ArrayList<Trailer> trailers){
+        String[] titles = new String[trailers.size()];
+        for (int i=0; i<trailers.size(); i++){
+            titles[i] = trailers.get(i).getmName();
+        }
+        return titles;
+    }
 }
