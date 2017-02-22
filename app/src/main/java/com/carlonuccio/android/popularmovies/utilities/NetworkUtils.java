@@ -32,12 +32,34 @@ public final class NetworkUtils {
 
     private static final String API_KEY = "api_key";
 
+    private static final String API_TRAILERS_PATH = "videos";
+
     public static URL buildUrl(Integer page, String sorting)  {
         Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
                 .appendPath(sorting)
                 .appendQueryParameter(API_KEY, BuildConfig.THE_MOVIE_API_KEY)
                 .appendQueryParameter(API_LANGUAGE, Locale.getDefault().getLanguage())
                 .appendQueryParameter(API_PARAM_PAGE, String.valueOf(page))
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
+    }
+
+    public static URL buildTrailerUrl(int id)  {
+        Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
+                .appendPath(String.valueOf(id))
+                .appendPath(API_TRAILERS_PATH)
+                .appendQueryParameter(API_KEY, BuildConfig.THE_MOVIE_API_KEY)
+                .appendQueryParameter(API_LANGUAGE, Locale.getDefault().getLanguage())
                 .build();
 
         URL url = null;

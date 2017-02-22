@@ -181,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
             @Override
             public void deliverResult(ArrayList<Movie> data) {
                 mMovie = data;
+                mLoadingIndicator.setVisibility(View.INVISIBLE);
                 super.deliverResult(data);
             }
         };

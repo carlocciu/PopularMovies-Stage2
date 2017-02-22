@@ -8,6 +8,7 @@ import android.content.Context;
 import android.net.Uri;
 
 import com.carlonuccio.android.popularmovies.Movie;
+import com.carlonuccio.android.popularmovies.Trailer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +45,31 @@ public final class MovieUtils {
         }
 
         return movieData;
+    }
+
+    public static ArrayList<Trailer> getSimpleTrailersFromJson(Context context, String trailerJsonStr) throws JSONException {
+
+        final String RESULT = "results";
+        final String NAME = "name";
+        final String KEY = "key";
+        final String SITE = "site";
+
+        ArrayList<Trailer> trailerData = new ArrayList<>();
+
+        JSONObject trailerJson = new JSONObject(trailerJsonStr);
+
+        JSONArray singlePage = trailerJson.getJSONArray(RESULT);
+
+        for (int i = 0; i < singlePage.length(); i++) {
+            if (singlePage.getJSONObject(i).getString(SITE).equals("YouTube")) {
+                trailerData.add(i, new Trailer(
+                        singlePage.getJSONObject(i).getString(NAME),
+                        singlePage.getJSONObject(i).getString(KEY),
+                        singlePage.getJSONObject(i).getString(SITE)));
+            }
+        }
+
+        return trailerData;
     }
 
     public static Uri getPosterUri(String size, String posterPath) {
