@@ -3,6 +3,7 @@ package com.carlonuccio.android.popularmovies;
 import android.content.Context;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     private Context mContext;
     private final MovieAdapterOnClickHandler mClickHandler;
+    private static final String LOG_TAG = "RecyclerViewAdapter";
+    private int counterOnCreateViewHolder = 0;
+    private int counterOnBindViewHolder = 0;
 
     private ArrayList<Movie> mMoviePosterPath = new ArrayList<>();
 
@@ -62,12 +66,16 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public MovieAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        Log.d(LOG_TAG, "onCreateViewHolder (" + ++counterOnCreateViewHolder + ")");
+
         View view = LayoutInflater.from(mContext).inflate(R.layout.movie_list_item, viewGroup, false);
+        view.setFocusable(true);
         return new MovieAdapterViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, int position) {
+        Log.d(LOG_TAG, "onBindViewHolder (" + ++counterOnBindViewHolder + ")");
         String moviePoster = mMoviePosterPath.get(position).getmPosterThumbnail();
         movieAdapterViewHolder.setImage(moviePoster);
     }

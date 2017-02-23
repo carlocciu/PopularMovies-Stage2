@@ -77,6 +77,15 @@
                         android:textColor="@android:color/black"
                         android:textSize="24sp" />
 
+                    <CheckBox
+                        android:id="@+id/star"
+                        style="?android:attr/starStyle"
+                        android:padding="16dp"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        />
+
                 </LinearLayout>
 
 

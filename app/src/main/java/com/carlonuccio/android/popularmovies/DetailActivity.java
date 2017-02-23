@@ -1,5 +1,6 @@
 package com.carlonuccio.android.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,8 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.carlonuccio.android.popularmovies.utilities.MovieUtils;
@@ -60,6 +64,8 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     @BindView(R.id.tv_error_review_message_display) TextView mErrorReviewTV;
     @BindView(R.id.pb_loading_review_indicator) ProgressBar mReviewLoadingIndicator;
 
+    @BindView(R.id.star) CheckBox mStarCB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +82,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         mTrailerAdapter = new TrailerAdapter(this, this);
 
         mRecyclerTrailerView.setAdapter(mTrailerAdapter);
-
 
 
         final LinearLayoutManager layoutReviewManager;
@@ -110,7 +115,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         Intent intentThatStartedThisActivity = getIntent();
 
         if (intentThatStartedThisActivity != null) {
-            Movie mMovie = intentThatStartedThisActivity.getParcelableExtra("Movie");
+            final Movie mMovie = intentThatStartedThisActivity.getParcelableExtra("Movie");
 
             mID = mMovie.getID();
             mTitle = mMovie.getmTitle();
@@ -128,6 +133,29 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
             mRatingTV.setText(String.format(getString(R.string.vote_average), mUserRating));
 
             mReleaseTV.setText(mReleaseDate);
+
+            if (mMovie.isBookmarked(this))
+                mStarCB.setChecked(true);
+            else
+                mStarCB.setChecked(false);
+
+
+            mStarCB.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+                @Override
+                public void onCheckedChanged(CompoundButton arg0, boolean isChecked) {
+                    Context context = getApplicationContext();
+                    if (!mMovie.isBookmarked(context)){
+                        if(mMovie.saveToBookmarks(context)){
+                            mStarCB.setChecked(true);
+                        }
+                    }
+                    else{
+                        if(mMovie.removeFromBookmarks(context)){
+                            mStarCB.setChecked(false);
+                        }
+                    }
+                }
+            });
 
         }
 
@@ -223,10 +251,8 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                         String jsonMovieResponse = NetworkUtils
                                 .getResponseFromHttpUrl(trailerRequestURL);
 
-                        ArrayList<Trailer> simpleTrailerJson = MovieUtils
-                                .getSimpleTrailersFromJson(DetailActivity.this, jsonMovieResponse);
+                        return MovieUtils.getSimpleTrailersFromJson(DetailActivity.this, jsonMovieResponse);
 
-                        return simpleTrailerJson;
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -299,10 +325,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                         String jsonMovieResponse = NetworkUtils
                                 .getResponseFromHttpUrl(trailerRequestURL);
 
-                        ArrayList<Review> simpleRevieJSON = MovieUtils
-                                .getSimpleReviewsFromJson(DetailActivity.this, jsonMovieResponse);
-
-                        return simpleRevieJSON;
+                        return MovieUtils.getSimpleReviewsFromJson(DetailActivity.this, jsonMovieResponse);
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -337,11 +360,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
 
     };
 
-    public void readMoreReviews(View view){
-        Intent intentToStartDetailActivity = new Intent(this, DetailReviewActivity.class);
-        intentToStartDetailActivity.putExtra("id", mID);
-        startActivity(intentToStartDetailActivity);
-    }
 
 
 }

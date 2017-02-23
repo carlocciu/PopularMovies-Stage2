@@ -16,5 +16,9 @@
     <string name="trailer">Trailers:</string>
     <string name="reviews">Reviews:</string>
     <string name="readmorereviews">Read more reviews</string>
+    <string name="insert_fav">Bookmarked!</string>
+    <string name="insert_fav_error">Error, not insert!</string>
+    <string name="delete_fav">Unbookmarked!</string>
+    <string name="delete_fav_error">Error, not delete!</string>
 </resources>
 

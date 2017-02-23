@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
@@ -29,6 +30,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import com.carlonuccio.android.popularmovies.data.MovieContract.MovieEntry;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler, LoaderManager.LoaderCallbacks<ArrayList<Movie>> {
 
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     public void onClick(Movie singleMovie) {
         Intent intentToStartDetailActivity = new Intent(this, DetailActivity.class);
         intentToStartDetailActivity.putExtra("Movie", singleMovie);
-        startActivity(intentToStartDetailActivity);
+        startActivityForResult(intentToStartDetailActivity, 1);
     }
 
     private void showErrorMessage() {
@@ -161,19 +164,36 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 String sorting = PopularMoviePreferences
                         .getPreferredSorting(MainActivity.this);
 
-                URL movieRequestURL = NetworkUtils.buildUrl(page, sorting);
+                if (!(sorting.equals("favorites"))) {
 
-                try {
-                    String jsonMovieResponse = NetworkUtils
-                            .getResponseFromHttpUrl(movieRequestURL);
+                    URL movieRequestURL = NetworkUtils.buildUrl(page, sorting);
 
-                    ArrayList<Movie> simpleMovieJson = MovieUtils
-                            .getSimpleMoviePostersFromJson(MainActivity.this, jsonMovieResponse);
+                    try {
+                        String jsonMovieResponse = NetworkUtils
+                                .getResponseFromHttpUrl(movieRequestURL);
 
-                    return simpleMovieJson;
+                        return MovieUtils.getSimpleMoviePostersFromJson(MainActivity.this, jsonMovieResponse);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+                else {
+                    Cursor retCursor = getContentResolver().query(MovieEntry.CONTENT_URI, null, null, null, null);
+                    ArrayList<Movie> mArrayList = new ArrayList<>();
+                    if (retCursor != null) {
+                        for (retCursor.moveToFirst(); !retCursor.isAfterLast(); retCursor.moveToNext()) {
+                            mArrayList.add(new Movie(retCursor.getInt(retCursor.getColumnIndex(MovieEntry.ID)),
+                                    retCursor.getString(retCursor.getColumnIndex(MovieEntry.COLUMN_TITLE)),
+                                    retCursor.getString(retCursor.getColumnIndex(MovieEntry.COLUMN_POSTER)),
+                                    retCursor.getString(retCursor.getColumnIndex(MovieEntry.COLUMN_OVERVIEW)),
+                                    retCursor.getDouble(retCursor.getColumnIndex(MovieEntry.COLUMN_USER_RATING)),
+                                    retCursor.getString(retCursor.getColumnIndex(MovieEntry.COLUMN_RELEASE_DATE))));
+                        }
+                        return mArrayList;
+                    }
                     return null;
                 }
             }
@@ -228,9 +248,32 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                 mMovieAdapter.clear();
                 loadMovieData();
                 return true;
+            case (R.id.menuSortFavorites):
+                editor.putString(keyForSorting, "favorites");
+                editor.commit();
+
+                mPagesLoaded = 0;
+                mMovieAdapter.clear();
+                loadMovieData();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    @Override
+    public void onResume()
+    {  // After a pause OR at startup
+        super.onResume();
+        mPagesLoaded = 0;
+        mMovieAdapter.clear();
+        loadMovieData();
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        mPagesLoaded = 0;
+        mMovieAdapter.clear();
+        loadMovieData();
+    }
 }

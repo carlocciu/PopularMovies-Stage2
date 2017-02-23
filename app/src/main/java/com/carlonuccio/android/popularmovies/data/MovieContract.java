@@ -23,6 +23,7 @@ public class MovieContract {
 
         public static final String TABLE_NAME = "movie";
 
+        public static final String ID = "id";
         public static final String COLUMN_TITLE = "title";
         public static final String COLUMN_POSTER = "poster";
         public static final String COLUMN_OVERVIEW = "overview";
