@@ -70,6 +70,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        getSupportActionBar().setElevation(0f);
         ButterKnife.bind(this);
 
         final LinearLayoutManager layoutTrailerManager;

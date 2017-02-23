@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.carlonuccio.android.popularmovies.EndlessRecyclerViewScrollListener;
 
 import com.carlonuccio.android.popularmovies.data.MovieContract.MovieEntry;
 
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     SharedPreferences.Editor editor;
     String keyForSorting;
 
+    private EndlessRecyclerViewScrollListener scrollListener;
+
     Bundle args = new Bundle();
 
     @Override
@@ -74,9 +77,26 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mRecyclerView.setHasFixedSize(true);
 
+
         mMovieAdapter = new MovieAdapter(this, this);
+        mMovieAdapter.setHasStableIds(true);
 
         mRecyclerView.setAdapter(mMovieAdapter);
+
+
+        scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                if (!(PopularMoviePreferences.getPreferredSorting(MainActivity.this).equals("favorites")))
+                    loadMovieData();
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        mRecyclerView.addOnScrollListener(scrollListener);
+
+        /*
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -91,15 +111,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
                     loadMovieData();
                 }
             }
-        });
+        });*/
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = prefs.edit();
         keyForSorting = this.getString(R.string.pref_sorting);
 
         mPagesLoaded = 0;
-        args.putInt("page",++mPagesLoaded);
-        getSupportLoaderManager().initLoader(ID_MOVIE_LOADER, args, this);
+        loadMovieData();
 
     }
 
@@ -238,6 +257,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                 mPagesLoaded = 0;
                 mMovieAdapter.clear();
+                scrollListener.resetState();
                 loadMovieData();
                 return true;
             case (R.id.menuSortTopRated):
@@ -246,6 +266,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                 mPagesLoaded = 0;
                 mMovieAdapter.clear();
+                scrollListener.resetState();
                 loadMovieData();
                 return true;
             case (R.id.menuSortFavorites):
@@ -254,7 +275,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
                 mPagesLoaded = 0;
                 mMovieAdapter.clear();
+                scrollListener.resetState();
                 loadMovieData();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -262,18 +285,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     @Override
     public void onResume()
-    {  // After a pause OR at startup
+    {
         super.onResume();
-        mPagesLoaded = 0;
-        mMovieAdapter.clear();
-        loadMovieData();
+        getSupportLoaderManager().initLoader(ID_MOVIE_LOADER, args, this);
     }
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        mPagesLoaded = 0;
-        mMovieAdapter.clear();
-        loadMovieData();
-    }
+
 }

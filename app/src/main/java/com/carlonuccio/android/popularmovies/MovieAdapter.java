@@ -66,7 +66,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     @Override
     public MovieAdapterViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        Log.d(LOG_TAG, "onCreateViewHolder (" + ++counterOnCreateViewHolder + ")");
 
         View view = LayoutInflater.from(mContext).inflate(R.layout.movie_list_item, viewGroup, false);
         view.setFocusable(true);
@@ -91,5 +90,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         notifyDataSetChanged();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return mMoviePosterPath.get(position).getID();
+    }
 
 }
