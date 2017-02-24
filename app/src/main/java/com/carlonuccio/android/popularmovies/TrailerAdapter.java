@@ -15,44 +15,18 @@ import java.util.ArrayList;
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerAdapterViewHolder> {
 
-    private Context mContext;
     private final TrailerAdapterOnClickHandler mClickHandler;
-
+    private Context mContext;
     private ArrayList<Trailer> mTrailers = new ArrayList<>();
-
-    public interface TrailerAdapterOnClickHandler {
-        void onClick(Trailer singleTrailer);
-    }
 
     public TrailerAdapter(Context context, TrailerAdapterOnClickHandler clickHandler) {
         mContext = context;
         mClickHandler = clickHandler;
     }
 
-    void clear(){
+    void clear() {
         mTrailers.clear();
         notifyDataSetChanged();
-    }
-
-    public class TrailerAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final TextView mTrailerTitle;
-
-        public TrailerAdapterViewHolder(View view) {
-            super(view);
-            mTrailerTitle = (TextView) view.findViewById(R.id.tv_text_trailer);
-            view.setOnClickListener(this);
-        }
-
-        void setText(String movie){
-            mTrailerTitle.setText(movie);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            Trailer singleTrailer = mTrailers.get(adapterPosition);
-            mClickHandler.onClick(singleTrailer);
-        }
     }
 
     @Override
@@ -76,5 +50,30 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
     public void setTrailerData(ArrayList<Trailer> movieData) {
         mTrailers.addAll(movieData);
         notifyDataSetChanged();
+    }
+
+    public interface TrailerAdapterOnClickHandler {
+        void onClick(Trailer singleTrailer);
+    }
+
+    public class TrailerAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public final TextView mTrailerTitle;
+
+        public TrailerAdapterViewHolder(View view) {
+            super(view);
+            mTrailerTitle = (TextView) view.findViewById(R.id.tv_text_trailer);
+            view.setOnClickListener(this);
+        }
+
+        void setText(String movie) {
+            mTrailerTitle.setText(movie);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Trailer singleTrailer = mTrailers.get(adapterPosition);
+            mClickHandler.onClick(singleTrailer);
+        }
     }
 }

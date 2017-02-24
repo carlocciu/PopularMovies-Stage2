@@ -1,13 +1,9 @@
 package com.carlonuccio.android.popularmovies;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
-
-import com.carlonuccio.android.popularmovies.utilities.MovieUtils;
-import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,11 +14,12 @@ import butterknife.ButterKnife;
 
 public class DetailReviewActivity extends AppCompatActivity {
 
+    @BindView(R.id.tv_text_author)
+    TextView authorTV;
+    @BindView(R.id.tv_text_content)
+    TextView contentTV;
     private String mAuthor;
     private String mContent;
-
-    @BindView(R.id.tv_text_author) TextView authorTV;
-    @BindView(R.id.tv_text_content) TextView contentTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

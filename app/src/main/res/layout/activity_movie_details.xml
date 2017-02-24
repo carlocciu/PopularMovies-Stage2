@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     android:orientation="vertical">
 
     <TextView
@@ -80,11 +81,10 @@
                     <CheckBox
                         android:id="@+id/star"
                         style="?android:attr/starStyle"
-                        android:padding="16dp"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        />
+                        android:layout_gravity="center"
+                        android:padding="16dp" />
 
                 </LinearLayout>
 
@@ -113,37 +113,36 @@
                 android:text="@string/trailer"
                 android:textColor="@android:color/black"
                 android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerview_trailer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/tv_error_trailer_message_display"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:padding="16dp"
                     android:text="@string/error"
-                    android:layout_gravity="center"
                     android:textSize="20sp"
                     android:visibility="invisible" />
 
                 <ProgressBar
                     android:id="@+id/pb_loading_trailer_indicator"
-                    android:layout_height="42dp"
                     android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:layout_gravity="center"
                     android:visibility="invisible" />
 
-            </LinearLayout>
+            </RelativeLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -152,7 +151,7 @@
                 android:text="@string/reviews"
                 android:textColor="@android:color/black"
                 android:textSize="30sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -162,8 +161,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerview_review"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/tv_error_review_message_display"
@@ -176,8 +174,8 @@
 
                 <ProgressBar
                     android:id="@+id/pb_loading_review_indicator"
-                    android:layout_height="42dp"
                     android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:layout_gravity="center"
                     android:visibility="invisible" />
 
@@ -185,8 +183,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
 
 
     </ScrollView>

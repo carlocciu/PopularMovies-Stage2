@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <!--This ImageView is for image thumbnail for one particular movie -->
     <ImageView
         android:id="@+id/tv_image_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        />
-
+        android:scaleType="centerCrop" />
 
 
 </LinearLayout>

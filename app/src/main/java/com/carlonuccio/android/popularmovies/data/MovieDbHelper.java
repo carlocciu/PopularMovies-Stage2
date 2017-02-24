@@ -26,16 +26,16 @@ public class MovieDbHelper extends SQLiteOpenHelper {
 
                 "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
 
-                        MovieEntry.ID               + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        MovieEntry.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
 
-                        MovieEntry.COLUMN_TITLE       + " TEXT NOT NULL, "                 +
+                        MovieEntry.COLUMN_TITLE + " TEXT NOT NULL, " +
 
-                        MovieEntry.COLUMN_POSTER + " TEXT NOT NULL,"                  +
+                        MovieEntry.COLUMN_POSTER + " TEXT NOT NULL," +
 
-                        MovieEntry.COLUMN_OVERVIEW   + " TEXT NOT NULL, "                    +
-                        MovieEntry.COLUMN_USER_RATING   + " REAL NOT NULL, "                    +
+                        MovieEntry.COLUMN_OVERVIEW + " TEXT NOT NULL, " +
+                        MovieEntry.COLUMN_USER_RATING + " REAL NOT NULL, " +
 
-                        MovieEntry.COLUMN_RELEASE_DATE   + " TEXT NOT NULL "                    +
+                        MovieEntry.COLUMN_RELEASE_DATE + " TEXT NOT NULL " +
 
 
                         " );";

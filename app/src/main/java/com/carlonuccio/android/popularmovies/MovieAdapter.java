@@ -20,48 +20,22 @@ import java.util.ArrayList;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private Context mContext;
-    private final MovieAdapterOnClickHandler mClickHandler;
     private static final String LOG_TAG = "RecyclerViewAdapter";
+    private final MovieAdapterOnClickHandler mClickHandler;
+    private Context mContext;
     private int counterOnCreateViewHolder = 0;
     private int counterOnBindViewHolder = 0;
 
     private ArrayList<Movie> mMoviePosterPath = new ArrayList<>();
-
-    public interface MovieAdapterOnClickHandler {
-        void onClick(Movie singleMovie);
-    }
 
     public MovieAdapter(Context context, MovieAdapterOnClickHandler clickHandler) {
         mContext = context;
         mClickHandler = clickHandler;
     }
 
-    void clear(){
+    void clear() {
         mMoviePosterPath.clear();
         notifyDataSetChanged();
-    }
-
-    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final ImageView mMovieImageView;
-
-        public MovieAdapterViewHolder(View view) {
-            super(view);
-            mMovieImageView = (ImageView) view.findViewById(R.id.tv_image_thumbnail);
-            view.setOnClickListener(this);
-        }
-
-        void setImage(String movie){
-            Uri posterUri = MovieUtils.getPosterUri("w342", movie);
-            Picasso.with(mContext).load(posterUri).into(mMovieImageView);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int adapterPosition = getAdapterPosition();
-            Movie singleMovie = mMoviePosterPath.get(adapterPosition);
-            mClickHandler.onClick(singleMovie);
-        }
     }
 
     @Override
@@ -93,6 +67,32 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
     @Override
     public long getItemId(int position) {
         return mMoviePosterPath.get(position).getID();
+    }
+
+    public interface MovieAdapterOnClickHandler {
+        void onClick(Movie singleMovie);
+    }
+
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public final ImageView mMovieImageView;
+
+        public MovieAdapterViewHolder(View view) {
+            super(view);
+            mMovieImageView = (ImageView) view.findViewById(R.id.tv_image_thumbnail);
+            view.setOnClickListener(this);
+        }
+
+        void setImage(String movie) {
+            Uri posterUri = MovieUtils.getPosterUri("w342", movie);
+            Picasso.with(mContext).load(posterUri).into(mMovieImageView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            Movie singleMovie = mMoviePosterPath.get(adapterPosition);
+            mClickHandler.onClick(singleMovie);
+        }
     }
 
 }

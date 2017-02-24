@@ -14,7 +14,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -35,7 +34,7 @@ public final class NetworkUtils {
     private static final String TRAILERS_PATH = "videos";
     private static final String REVIEW_PATH = "reviews";
 
-    public static URL buildUrl(Integer page, String sorting)  {
+    public static URL buildUrl(Integer page, String sorting) {
         Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
                 .appendPath(sorting)
                 .appendQueryParameter(API_KEY, BuildConfig.THE_MOVIE_API_KEY)
@@ -55,7 +54,7 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildTrailerUrl(int id)  {
+    public static URL buildTrailerUrl(int id) {
         Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
                 .appendPath(String.valueOf(id))
                 .appendPath(TRAILERS_PATH)
@@ -75,7 +74,7 @@ public final class NetworkUtils {
         return url;
     }
 
-    public static URL buildReviewUrl(int id, int page)  {
+    public static URL buildReviewUrl(int id, int page) {
         Uri builtUri = Uri.parse(MOVIE_URL).buildUpon()
                 .appendPath(String.valueOf(id))
                 .appendPath(REVIEW_PATH)

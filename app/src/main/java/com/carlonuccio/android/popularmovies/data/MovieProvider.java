@@ -15,7 +15,7 @@ import static com.carlonuccio.android.popularmovies.data.MovieContract.MovieEntr
  * Created by carlonuccio on 22/02/17.
  */
 
-public class MovieProvider extends ContentProvider{
+public class MovieProvider extends ContentProvider {
 
     public static final int CODE_MOVIE = 100;
     public static final int CODE_MOVIE_WITH_ID = 101;
@@ -49,7 +49,7 @@ public class MovieProvider extends ContentProvider{
         int match = sUriMatcher.match(uri);
         Cursor retCursor;
 
-        switch (match){
+        switch (match) {
             case CODE_MOVIE:
                 retCursor = db.query(TABLE_NAME,
                         projection,
@@ -80,10 +80,10 @@ public class MovieProvider extends ContentProvider{
         int match = sUriMatcher.match(uri);
         Uri returnUri;
 
-        switch (match){
+        switch (match) {
             case CODE_MOVIE:
                 long id = db.insert(TABLE_NAME, null, values);
-                if ( id > 0 ) {
+                if (id > 0) {
                     returnUri = ContentUris.withAppendedId(MovieContract.MovieEntry.CONTENT_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);

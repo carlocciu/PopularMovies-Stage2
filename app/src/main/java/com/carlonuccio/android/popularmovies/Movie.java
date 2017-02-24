@@ -8,7 +8,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.Toast;
 
-import com.carlonuccio.android.popularmovies.data.MovieContract;
 import com.carlonuccio.android.popularmovies.data.MovieContract.MovieEntry;
 
 /**
@@ -17,13 +16,23 @@ import com.carlonuccio.android.popularmovies.data.MovieContract.MovieEntry;
 
 public class Movie implements Parcelable {
 
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
     private int ID;
     private String mTitle;
     private String mPosterThumbnail;
     private String mOverview;
     private double mUserRating;
     private String mReleaseDate;
-
     private byte[] mPoster;
 
     public Movie(int ID, String mTitle, String mPosterThumbnail, String mOverview, double mUserRating, String mReleaseDate) {
@@ -42,6 +51,18 @@ public class Movie implements Parcelable {
         this.mOverview = mOverview;
         this.mUserRating = mUserRating;
         this.mReleaseDate = mReleaseDate;
+    }
+
+    public Movie() {
+    }
+
+    protected Movie(Parcel in) {
+        this.ID = in.readInt();
+        this.mTitle = in.readString();
+        this.mPosterThumbnail = in.readString();
+        this.mOverview = in.readString();
+        this.mUserRating = in.readDouble();
+        this.mReleaseDate = in.readString();
     }
 
     public byte[] getmPoster() {
@@ -72,7 +93,6 @@ public class Movie implements Parcelable {
         return mReleaseDate;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -87,31 +107,6 @@ public class Movie implements Parcelable {
         dest.writeDouble(this.mUserRating);
         dest.writeString(this.mReleaseDate);
     }
-
-    public Movie() {
-    }
-
-    protected Movie(Parcel in) {
-        this.ID = in.readInt();
-        this.mTitle = in.readString();
-        this.mPosterThumbnail = in.readString();
-        this.mOverview = in.readString();
-        this.mUserRating = in.readDouble();
-        this.mReleaseDate = in.readString();
-    }
-
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
-        @Override
-        public Movie createFromParcel(Parcel source) {
-            return new Movie(source);
-        }
-
-        @Override
-        public Movie[] newArray(int size) {
-            return new Movie[size];
-        }
-    };
-
 
     public boolean saveToBookmarks(Context context) {
         ContentValues contentValues = new ContentValues();

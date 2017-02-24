@@ -86,9 +86,9 @@ public final class MovieUtils {
         JSONArray singlePage = reviewJSON.getJSONArray(RESULT);
 
         for (int i = 0; i < singlePage.length(); i++) {
-                reviewData.add(i, new Review(
-                        singlePage.getJSONObject(i).getString(AUTHOR),
-                        singlePage.getJSONObject(i).getString(CONTENT)));
+            reviewData.add(i, new Review(
+                    singlePage.getJSONObject(i).getString(AUTHOR),
+                    singlePage.getJSONObject(i).getString(CONTENT)));
         }
 
         return reviewData;
